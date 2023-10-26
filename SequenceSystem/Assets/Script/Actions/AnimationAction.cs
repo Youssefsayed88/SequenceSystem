@@ -1,26 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class AnimationAction : SequenceAction
 {
-    public Animator animator;
+    Animator animator;
 
-    string clipName;
+    public AnimationClip[] clips;
+
 
     void Start()
     {
-        AnimationClip clip = animator.runtimeAnimatorController.animationClips[0];
-
-        clipName = clip.name;
-        actionTime = clip.length;
+        animator =  GetComponent<Animator>();
     }
 
     //play the first clip in the animator's animationClips
-    public override IEnumerator Execute(){
-        animator.Play(clipName);
+    public override IEnumerator Execute(String clipName){
+
+        foreach(AnimationClip clip in clips)
+        {
+            if(clip.name == clipName){
+                actionTime = clip.length;
+                animator.Play(clip.name);
+            }
+        }
 
         if (waitToFinish)
         {

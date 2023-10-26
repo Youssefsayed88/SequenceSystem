@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SequenceSystem : MonoBehaviour
 {
-    public List<SequenceAction> sequence;
+    public Sequence[] sequences;
 
     void Start()
     {
@@ -13,9 +14,9 @@ public class SequenceSystem : MonoBehaviour
 
     //For Scalability this function can be transformed into an event
     IEnumerator ExecuteSequence(){
-        foreach (SequenceAction action in sequence)
+        foreach (Sequence sequence in sequences)
         {
-            yield return action.Execute(); // This will call the specific Execute method of the derived class.
+            yield return sequence.action.Execute(sequence.input); // This will call the specific Execute method of the derived class.
         }
     }
 }
